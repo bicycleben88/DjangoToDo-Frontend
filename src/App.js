@@ -1,5 +1,11 @@
+import SignUp from "./components/SignUp";
+
 function App() {
-  return <div className="App">Django Todo Frontend</div>;
+  return (
+    <div className="App">
+      <SignUp />
+    </div>
+  );
 }
 
 export default App;
