@@ -12,9 +12,14 @@ const useForm = (initial = {}) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
+  const clearForm = () => {
+    setInputs(initial);
+  };
+
   return {
     inputs,
     handleChange,
+    clearForm,
   };
 };
 

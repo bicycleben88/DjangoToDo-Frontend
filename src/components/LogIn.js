@@ -2,18 +2,18 @@ import React from "react";
 import useForm from "../utils/useForm";
 import { GlobalContext } from "../App";
 
-export default function SignUp() {
-  const { globalState } = React.useContext(GlobalContext);
+export default function LogIn() {
+  const { globalState, setGlobalState } = React.useContext(GlobalContext);
   const { url } = globalState;
   const { inputs, handleChange, clearForm } = useForm({
     username: "",
     password: "",
   });
 
-  const createUser = async (e) => {
+  const logInUser = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(`${url}/users/`, {
+    const response = await fetch(`${url}/api/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/JSON",
@@ -23,10 +23,11 @@ export default function SignUp() {
 
     const data = await response.json();
     clearForm();
+    setGlobalState({ ...globalState, token: data.access });
   };
 
   return (
-    <form onSubmit={createUser}>
+    <form onSubmit={logInUser}>
       <label>
         Username:
         <input
@@ -45,8 +46,8 @@ export default function SignUp() {
           onChange={handleChange}
         />
       </label>
-      <button type="submit" aria-label="create user">
-        Create Account
+      <button type="submit" aria-label="log in">
+        Log In
       </button>
     </form>
   );
