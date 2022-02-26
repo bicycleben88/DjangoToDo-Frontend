@@ -1,6 +1,7 @@
 import React from "react";
 import useForm from "../utils/useForm";
 import { GlobalContext } from "../App";
+import jwt_decode from "jwt-decode";
 
 export default function LogIn() {
   const { globalState, setGlobalState } = React.useContext(GlobalContext);
@@ -22,8 +23,10 @@ export default function LogIn() {
     });
 
     const data = await response.json();
+    const { user_id } = jwt_decode(data.access);
+
     clearForm();
-    setGlobalState({ ...globalState, token: data.access });
+    setGlobalState({ ...globalState, token: data.access, id: user_id });
   };
 
   return (
