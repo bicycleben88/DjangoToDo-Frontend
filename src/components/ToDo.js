@@ -26,7 +26,7 @@ export default function Todo() {
   const createTodo = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(`${url}/todos/`, {
+    await fetch(`${url}/todos/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/JSON",
@@ -35,10 +35,19 @@ export default function Todo() {
       body: JSON.stringify(inputs),
     });
 
-    const data = await response.json();
-
     getTodos();
     clearForm();
+  };
+
+  const deleteTodo = async (todo) => {
+    await fetch(`${url}/todos/${todo}/`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    getTodos();
   };
 
   React.useEffect(() => {
@@ -61,7 +70,21 @@ export default function Todo() {
           Create To Do
         </button>
       </form>
-      <ul>{todos && todos.map((todo) => <li>{todo.item}</li>)}</ul>
+      <ul>
+        {todos &&
+          todos.map((todo) => (
+            <li key={todo.id}>
+              {todo.item}
+              <button
+                type="button"
+                aria-label="delete"
+                onClick={() => deleteTodo(todo.id)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+      </ul>
     </>
   );
 }
